@@ -12,7 +12,7 @@ from PIL import Image
 import easyocr
 
 def main():
-    st.title('Image Text Extractor')
+    st.title('Image 2 Text Extractor')
 
     uploaded_image = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
