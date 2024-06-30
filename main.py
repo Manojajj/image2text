@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-import easyocr
+import pytesseract
 
 def main():
     st.title('Image 2 Text Extractor')
@@ -13,12 +13,10 @@ def main():
         st.write('')
         st.write('Extracted Text:')
 
-        # Perform OCR using EasyOCR
-        reader = easyocr.Reader(['en'])
-        result = reader.readtext(image)
+        # Perform OCR using Tesseract
+        extracted_text = pytesseract.image_to_string(image)
 
-        for detection in result:
-            st.write(detection[1])
+        st.write(extracted_text)
 
 if __name__ == '__main__':
     main()
