@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
-import pytesseract
+import paddleocr
+from paddleocr import PaddleOCR, draw_ocr
 
 def main():
     st.title('Image 2 Text Extractor')
@@ -13,10 +14,16 @@ def main():
         st.write('')
         st.write('Extracted Text:')
 
-        # Perform OCR using Tesseract
-        extracted_text = pytesseract.image_to_string(image)
-
-        st.write(extracted_text)
+        # Initialize PaddleOCR
+        ocr = PaddleOCR(use_angle_cls=True, lang='en')
+        
+        # Perform OCR
+        result = ocr.ocr(image, cls=True)
+        
+        # Extract and display text
+        for line in result:
+            line_text = line[1][0]
+            st.write(line_text)
 
 if __name__ == '__main__':
     main()
