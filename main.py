@@ -19,8 +19,8 @@ def main():
         image.save(img_byte_arr, format=image.format)
         img_byte_arr = img_byte_arr.getvalue()
 
-        # Initialize Textract client
-        client = boto3.client('textract')
+        # Initialize Textract client with region
+        client = boto3.client('textract', region_name='us-east-1')
 
         # Call Amazon Textract
         response = client.detect_document_text(Document={'Bytes': img_byte_arr})
