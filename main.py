@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
-import pytesseract
+import boto3
+from io import BytesIO
 
 def main():
     st.title('Image 2 Text Extractor')
@@ -13,8 +14,22 @@ def main():
         st.write('')
         st.write('Extracted Text:')
 
-        # Perform OCR using Tesseract
-        extracted_text = pytesseract.image_to_string(image)
+        # Convert the image to bytes
+        img_byte_arr = BytesIO()
+        image.save(img_byte_arr, format=image.format)
+        img_byte_arr = img_byte_arr.getvalue()
+
+        # Initialize Textract client
+        client = boto3.client('textract')
+
+        # Call Amazon Textract
+        response = client.detect_document_text(Document={'Bytes': img_byte_arr})
+
+        # Extract detected text
+        extracted_text = ""
+        for item in response['Blocks']:
+            if item['BlockType'] == 'LINE':
+                extracted_text += item['Text'] + '\n'
 
         st.write(extracted_text)
 
