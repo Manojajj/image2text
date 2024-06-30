@@ -1,7 +1,6 @@
 import streamlit as st
 from PIL import Image
-import paddleocr
-from paddleocr import PaddleOCR, draw_ocr
+import easyocr
 
 def main():
     st.title('Image 2 Text Extractor')
@@ -14,16 +13,12 @@ def main():
         st.write('')
         st.write('Extracted Text:')
 
-        # Initialize PaddleOCR
-        ocr = PaddleOCR(use_angle_cls=True, lang='en')
-        
-        # Perform OCR
-        result = ocr.ocr(image, cls=True)
-        
-        # Extract and display text
-        for line in result:
-            line_text = line[1][0]
-            st.write(line_text)
+        # Perform OCR using EasyOCR
+        reader = easyocr.Reader(['en'])
+        result = reader.readtext(image)
+
+        for detection in result:
+            st.write(detection[1])
 
 if __name__ == '__main__':
     main()
